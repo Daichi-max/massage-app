@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Patient {
+  id              String            @id @default(cuid())
+  firstName       String
+  lastName        String
+  birthDate       DateTime
+  gender          String
+  insuranceType   String
+  firstVisitDate  DateTime?
+  copaymentRate   Float
+  treatments      TreatmentRecord[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+}
+
+model Practitioner {
+  id              String            @id @default(cuid())
+  firstName       String
+  lastName        String
+  licenseNumber   String
+  licenseType     String
+  treatments      TreatmentRecord[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+}
+
+model TreatmentRecord {
+  id                String        @id @default(cuid())
+  patientId         String
+  practitionerId    String
+  date              DateTime
+  time              DateTime
+  treatmentType     String
+  treatmentAreas    Json
+  treatmentMethods  Json
+  painLevel         Int
+  localCount        Int
+  isHotCompress     Boolean       @default(false)
+  isHotElectric     Boolean       @default(false)
+  isManualTherapy   Boolean       @default(false)
+  treatmentCount    Int
+  isElectrotherapy  Boolean       @default(false)
+  isFirstVisit      Boolean       @default(false)
+  firstVisitFee     Int           @default(0)
+  totalFee          Int
+  patientCopayment  Int
+  copaymentRate     Float
+  notes             String?
+  patient           Patient       @relation(fields: [patientId], references: [id])
+  practitioner      Practitioner  @relation(fields: [practitionerId], references: [id])
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+}
+
+model FeeMaster {
+  id        String   @id @default(cuid())
+  feeType   String
+  count     Int?
+  amount    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([feeType, count])
+} 
