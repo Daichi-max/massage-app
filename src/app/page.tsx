@@ -1,9 +1,15 @@
 'use client';
 
-import { PriceCalculatorForm } from '@/components/PriceCalculatorForm';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
+  const router = useRouter();
+
+  const handleNewPatient = () => {
+    router.push('/patients/new');
+  };
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
       <div className="text-center space-y-8">
@@ -15,7 +21,7 @@ export default function Home() {
         </p>
         <div className="space-y-4">
           <button
-            onClick={() => console.log("新規登録")}
+            onClick={handleNewPatient}
             className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
           >
             新規患者登録
