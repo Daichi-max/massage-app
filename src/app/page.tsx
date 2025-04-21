@@ -1,3 +1,5 @@
+'use client';
+
 import { PriceCalculatorForm } from '@/components/PriceCalculatorForm';
 import Link from 'next/link';
 
